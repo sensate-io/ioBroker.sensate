@@ -3,15 +3,10 @@
   "version": "0.0.1",
   "description": "Connector to the Sensate Platform",
   "author": {
-    "name": "Manuel",
+    "name": "Sensate Digital Technologies GmbH",
     "email": "support@sensate.io"
   },
-  "contributors": [
-    {
-      "name": "Sensate Digital Technologies GmbH"
-    }
-  ],
-  "homepage": "https://github.com/sensate-io/ioBroker.sensate",
+  "homepage": "https://www.sensate.io",
   "license": "MIT",
   "keywords": [
     "IOT",

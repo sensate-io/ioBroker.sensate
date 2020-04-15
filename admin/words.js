@@ -4,38 +4,18 @@
 systemDictionary = {
 	"sensate adapter settings": {
 		"en": "Adapter settings for sensate",
-		"de": "Adaptereinstellungen für sensate",
-		"ru": "Настройки адаптера для sensate",
-		"pt": "Configurações do adaptador para sensate",
-		"nl": "Adapterinstellingen voor sensate",
-		"fr": "Paramètres d'adaptateur pour sensate",
-		"it": "Impostazioni dell'adattatore per sensate",
-		"es": "Ajustes del adaptador para sensate",
-		"pl": "Ustawienia adaptera dla sensate",
-		"zh-cn": "sensate的适配器设置"
+		"de": "Adaptereinstellungen für sensate"
 	},
-	"option1": {
-		"en": "option1",
-		"de": "Option 1",
-		"ru": "Опция 1",
-		"pt": "Opção 1",
-		"nl": "Optie 1",
-		"fr": "Option 1",
-		"it": "opzione 1",
-		"es": "Opción 1",
-		"pl": "opcja 1",
-		"zh-cn": "选项1"
+	"Access Token": {
+		"en": "Access Token",
+		"de": "Zugriffstoken"
 	},
-	"option2": {
-		"en": "option2",
-		"de": "Option 2",
-		"ru": "option2",
-		"pt": "opção 2",
-		"nl": "Optie 2",
-		"fr": "Option 2",
-		"it": "opzione 2",
-		"es": "opcion 2",
-		"pl": "Opcja 2",
-		"zh-cn": "选项2"
+	"List Key": {
+		"en": "List Key",
+		"de": "Schlüssel"
+	},
+	"Temperature Unit": {
+		"en": "Temperature Unit",
+		"de": "Temperatureinheit"
 	}
 };
