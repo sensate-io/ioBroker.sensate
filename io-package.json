@@ -1,0 +1,88 @@
+{
+	"common": {
+		"name": "sensate",
+		"version": "0.0.1",
+		"news": {
+			"0.0.1": {
+				"en": "initial release",
+				"de": "Erstveröffentlichung",
+				"ru": "Начальная версия",
+				"pt": "lançamento inicial",
+				"nl": "Eerste uitgave",
+				"fr": "Première version",
+				"it": "Versione iniziale",
+				"es": "Versión inicial",
+				"pl": "Pierwsze wydanie",
+				"zh-cn": "首次出版"
+			}
+		},
+		"title": "Sensate",
+		"titleLang": {
+			"en": "Sensate",
+			"de": "Sensate",
+			"ru": "чувственный",
+			"pt": "Sensate",
+			"nl": "Sensate",
+			"fr": "Sensate",
+			"it": "sensoriale",
+			"es": "Que tiene sentidos",
+			"pl": "Sensate",
+			"zh-cn": "感官"
+		},
+		"desc": {
+			"en": "Connector to the Sensate Platform",
+			"de": "Anschluss an die Sensate-Plattform",
+			"ru": "Разъем для сенсорной платформы",
+			"pt": "Conector à plataforma Sensate",
+			"nl": "Connector naar het Sensate Platform",
+			"fr": "Connecteur à la plateforme Sensate",
+			"it": "Connettore per la piattaforma Sensate",
+			"es": "Conector a la plataforma Sensate",
+			"pl": "Złącze do platformy Sensate",
+			"zh-cn": "连接到Sensate平台"
+		},
+		"authors": [
+			"Manuel <support@sensate.io>"
+		],
+		"keywords": [
+			"IOT",
+			"DIY",
+			"Sensors",
+			"ESP8266",
+			"ESP32",
+			"Temperature",
+			"Humidity",
+			"ESP12",
+			"NodeMCU",
+			"Rules",
+			"Alarms",
+			"Smartphone",
+			"App"
+		],
+		"license": "MIT",
+		"platform": "Javascript/Node.js",
+		"main": "main.js",
+		"icon": "sensate.png",
+		"enabled": true,
+		"extIcon": "https://raw.githubusercontent.com/sensate-io/ioBroker.sensate/master/admin/sensate.png",
+		"readme": "https://github.com/sensate-io/ioBroker.sensate/blob/master/README.md",
+		"loglevel": "info",
+		"mode": "daemon",
+		"type": "iot-systems",
+		"compact": true,
+		"connectionType": "cloud",
+		"dataSource": "poll",
+		"materialize": true,
+		"dependencies": [
+			{
+				"js-controller": ">=1.4.2"
+			}
+		]
+	},
+	"native": {
+		"option1": true,
+		"option2": "42"
+	},
+	"objects": [],
+	"instanceObjects": []
+}
