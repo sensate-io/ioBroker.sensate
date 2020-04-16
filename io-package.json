@@ -1,25 +1,34 @@
 {
 	"common": {
 		"name": "sensate",
-		"version": "0.1.0",
+		"version": "0.1.1",
 		"news": {
+			"0.1.1": {
+				"en": "minor improvements",
+				"de": "Kleine Verbesserungen",
+				"ru": "мелкие доработки"
+			},
 			"0.1.0": {
 				"en": "first working release",
-				"de": "Erster funktionierender Release"
+				"de": "Erster funktionierender Release",
+				"ru": "первый рабочий релиз"
 			},
 			"0.0.1": {
 				"en": "initial release",
-				"de": "Erstveröffentlichung"
+				"de": "Erstveröffentlichung",
+				"ru": "Начальная версия"
 			}
 		},
 		"title": "Sensate",
 		"titleLang": {
-			"en": "Sensate",
-			"de": "Sensate"
+			"en": "Sensate platform",
+			"de": "Sensate Plattform",
+			"ru": "Sensate платформа"
 		},
 		"desc": {
 			"en": "Connector to the Sensate Platform",
-			"de": "Anschluss an die Sensate-Plattform"
+			"de": "Anschluss an die Sensate-Plattform",
+			"ru": "Соединитель с Sensate платформой"
 		},
 		"authors": [
 			"Sensate Digital Solutions GmbH <support@sensate.io>"

@@ -237,6 +237,28 @@ class Sensate extends utils.Adapter {
 								this.setState(channel + '.name', {val: content[key].name, ack: true});
 
 								var unit = '?';
+								var role = 'value'
+
+								switch(content[key].sensorType) {
+
+									case 'TEMPERATURE':
+										role = 'value.temperature';
+										break;
+									case 'RELATIVE_HUMIDITY':
+										role = 'value.humidity';
+										break;
+									case 'PRESSURE':
+										role = 'value.pressure';
+										break;
+									case 'ALTITUDE':
+									case 'LUMINOUS_FLUX':
+									case 'PH':
+									case 'AIRQUALITY':
+									case 'RAW':
+									default:
+										break;
+								}
+
 								switch(content[key].dataUnit)
 								{
 									case 'AMPERE':
@@ -250,15 +272,18 @@ class Sensate extends utils.Adapter {
 										break;
 									case 'CELSIUS':
 										unit = "°C";
+										role = 'value.temperature';
 										break;
 									case 'FAHRENHEIT':
 										unit = "°F";
+										role = 'value.temperature';
 										break;
 									case 'HEKTOPASCAL':
 										unit = "hPa";
 										break;
 									case 'KELVIN':
 										unit = "K";
+										role = 'value.temperature';
 										break;
 									case 'KOHM':
 										unit = "kΩ";
@@ -309,7 +334,6 @@ class Sensate extends utils.Adapter {
 										unit = "Wh";
 										break;
 									default:
-										unit = "?";
 										break;
 								}
 
@@ -318,7 +342,7 @@ class Sensate extends utils.Adapter {
 									common: {
 										name: group+':'+content[key].name+':value',
 										type: 'number',
-										role: 'value',
+										role: role,
 										unit: unit,
 										read: true,
 										write: false
