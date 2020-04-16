@@ -1,48 +1,28 @@
 {
 	"common": {
 		"name": "sensate",
-		"version": "0.0.1",
+		"version": "0.1.0",
 		"news": {
+			"0.1.0": {
+				"en": "first working release",
+				"de": "Erster funktionierender Release"
+			},
 			"0.0.1": {
 				"en": "initial release",
-				"de": "Erstveröffentlichung",
-				"ru": "Начальная версия",
-				"pt": "lançamento inicial",
-				"nl": "Eerste uitgave",
-				"fr": "Première version",
-				"it": "Versione iniziale",
-				"es": "Versión inicial",
-				"pl": "Pierwsze wydanie",
-				"zh-cn": "首次出版"
+				"de": "Erstveröffentlichung"
 			}
 		},
 		"title": "Sensate",
 		"titleLang": {
 			"en": "Sensate",
-			"de": "Sensate",
-			"ru": "чувственный",
-			"pt": "Sensate",
-			"nl": "Sensate",
-			"fr": "Sensate",
-			"it": "sensoriale",
-			"es": "Que tiene sentidos",
-			"pl": "Sensate",
-			"zh-cn": "感官"
+			"de": "Sensate"
 		},
 		"desc": {
 			"en": "Connector to the Sensate Platform",
-			"de": "Anschluss an die Sensate-Plattform",
-			"ru": "Разъем для сенсорной платформы",
-			"pt": "Conector à plataforma Sensate",
-			"nl": "Connector naar het Sensate Platform",
-			"fr": "Connecteur à la plateforme Sensate",
-			"it": "Connettore per la piattaforma Sensate",
-			"es": "Conector a la plataforma Sensate",
-			"pl": "Złącze do platformy Sensate",
-			"zh-cn": "连接到Sensate平台"
+			"de": "Anschluss an die Sensate-Plattform"
 		},
 		"authors": [
-			"Manuel <support@sensate.io>"
+			"Sensate Digital Solutions GmbH <support@sensate.io>"
 		],
 		"keywords": [
 			"IOT",
@@ -80,8 +60,6 @@
 		]
 	},
 	"native": {
-		"option1": true,
-		"option2": "42"
 	},
 	"objects": [],
 	"instanceObjects": []
