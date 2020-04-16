@@ -20,6 +20,8 @@ supported sensors for all kind of sensor data.
 
 ## Changelog
 
+### 0.1.1
+* Minor improvements
 ### 0.1.0
 * First working pre-release with polling and regular sensor updates.
 ### 0.0.1
