@@ -8,8 +8,6 @@
 // you need to create an adapter
 const utils = require("@iobroker/adapter-core");
 
-// Load your modules here, e.g.:
-// const fs = require("fs");
 const request = require('request');
 
 class Sensate extends utils.Adapter {
@@ -27,6 +25,8 @@ class Sensate extends utils.Adapter {
 		this.on("stateChange", this.onStateChange.bind(this));
 		// this.on("message", this.onMessage.bind(this));
 		this.on("unload", this.onUnload.bind(this));
+
+		this.loopVar = null;
 	}
 
 	/**
@@ -37,10 +37,21 @@ class Sensate extends utils.Adapter {
 
 		// The adapters config (in the instance object everything under the attribute "native") is accessible via
 		// this.config:
-		this.log.info("Config authToken: " + this.config.accessToken);
-		this.log.info("Config listKey: " + this.config.listKey);
 
-		this.getDataList(this.config.accessToken, this.config.listKey, this.config.tempUnit)
+		const self = this;
+
+		if(this.config.accessToken==null || this.config.listKey==null)
+		{
+			self.log.error("Please provide an accessToken and listKey!");
+			return;
+		}
+		else
+		{
+			self.getDataList(self.config.accessToken, self.config.listKey, self.config.tempUnit)
+			this.loopVar = setInterval(function() {
+				self.getDataList(self.config.accessToken, self.config.listKey, self.config.tempUnit)
+			}, 30*1000);
+		}
 
 		// /*
 		// For every state in the system there has to be also an object of type state
@@ -91,6 +102,8 @@ class Sensate extends utils.Adapter {
 	onUnload(callback) {
 		try {
 			this.log.info("cleaned everything up...");
+			if(this.loopVar!=null)
+				clearInterval(this.loopVar);
 			callback();
 		} catch (e) {
 			callback();
@@ -127,28 +140,18 @@ class Sensate extends utils.Adapter {
 		}
 	}
 
-	// /**
-	//  * Some message was sent to this instance over message box. Used by email, pushover, text2speech, ...
-	//  * Using this method requires "common.message" property to be set to true in io-package.json
-	//  * @param {ioBroker.Message} obj
-	//  */
-	// onMessage(obj) {
-	// 	if (typeof obj === "object" && obj.message) {
-	// 		if (obj.command === "send") {
-	// 			// e.g. send email or pushover or whatever
-	// 			this.log.info("send command");
-
-	// 			// Send response in callback if required
-	// 			if (obj.callback) this.sendTo(obj.from, obj.command, "Message received", obj.callback);
-	// 		}
-	// 	}
-	// }
-
+	/**
+	 * This function is called periodically (every 30 sec) to get sensor updates from the Sensate Api
+	 * Reference: https://api.sensate.io
+	 * @param {string} accessToken
+	 * @param {string} listKey
+	 * @param {string} tempUnit
+	 */
 	getDataList(accessToken, listKey, tempUnit) {
 
 		const self = this;
 
-		this.log.info('get Data List...');
+		this.log.debug('Refresh Data List...');
 
 		accessToken = escape(accessToken);
 		listKey = escape(listKey);
@@ -156,8 +159,6 @@ class Sensate extends utils.Adapter {
 		var url = 'https://api.sensate.io/v1/data/live/list?accessToken='+accessToken+'&listKey='+listKey;
 		if(tempUnit!=null)
 			url = url + '&tempUnit='+tempUnit;
-
-		this.log.info(url);
 
 		request(
 			{
@@ -169,183 +170,212 @@ class Sensate extends utils.Adapter {
 			(error, response, content) => {
 
 				if (response) {
-					for (var key in content) {
-						if (content.hasOwnProperty(key)) {
 
-							var group = "Unknown";
-							if(content[key].category!=null)
-								group = content[key].category;
-
-							self.setObjectNotExists(group, {
-								type: 'device',
-								common: {
-									name: group
-								},
-								native: {}
-							});
-
-							const channel = group+"."+key;
-
-							self.setObjectNotExists(channel, {
-								type: 'channel',
-								common: {
-									name: group+':'+content[key].name
-								},
-								native: {}
-							});
-
-							self.setObjectNotExists(channel + '.id', {
-								type: 'state',
-								common: {
-									name: group+':'+content[key].name+':id',
-									type: 'string',
-									role: 'text'
-								},
-								native: {}
-							});
-							this.setState(channel + '.id', {val: key, ack: true});
-
-							self.setObjectNotExists(channel + '.shortName', {
-								type: 'state',
-								common: {
-									name: group+':'+content[key].name+':shortName',
-									type: 'string',
-									role: 'text'
-								},
-								native: {}
-							});
-							this.setState(channel + '.shortName', {val: content[key].shortName, ack: true});
-
-							self.setObjectNotExists(channel + '.name', {
-								type: 'state',
-								common: {
-									name: group+':'+content[key].name+':name',
-									type: 'string',
-									role: 'text'
-								},
-								native: {}
-							});
-							this.setState(channel + '.name', {val: content[key].name, ack: true});
-
-							var unit = '?';
-							switch(content[key].dataUnit)
-							{
-								case 'AMPERE':
-									unit = "A";
-									break;
-								case 'AMPEREHOURS':
-									unit = "Ah";
-									break;
-								case 'BAR':
-									unit = "bar";
-									break;
-								case 'CELSIUS':
-									unit = "°C";
-									break;
-								case 'FAHRENHEIT':
-									unit = "°F";
-									break;
-								case 'HEKTOPASCAL':
-									unit = "hPa";
-									break;
-								case 'KELVIN':
-									unit = "K";
-									break;
-								case 'KOHM':
-									unit = "kΩ";
-									break;
-								case 'LUMEN':
-									unit = "lum";
-									break;
-								case 'LUX':
-									unit = "lux";
-									break;
-								case 'METER':
-									unit = "m";
-									break;
-								case 'MILLIAMPERE':
-									unit = "mA";
-									break;
-								case 'MILLIAMPEREHOURS':
-									unit = "mAh";
-									break;
-								case 'MILLIVOLT':
-									unit = "mV";
-									break;
-								case 'NONE':
-									unit = "";
-									break;
-								case 'OHM':
-									unit = "Ω";
-									break;
-								case 'PASCAL':
-									unit = "Pa";
-									break;
-								case 'PERCENT':
-									unit = "%";
-									break;
-								case 'PPM':
-									unit = "ppm";
-									break;
-								case 'UNKNOWN':
-									unit = "?";
-									break;
-								case 'VOLT':
-									unit = "V";
-									break;
-								case 'WATT':
-									unit = "W";
-									break;
-								case 'WATTHOURS':
-									unit = "Wh";
-									break;
-								default:
-									unit = "?";
-									break;
-							}
-
-							self.setObjectNotExists(channel + '.value', {
-								type: 'state',
-								common: {
-									name: group+':'+content[key].name+':value',
-									type: 'number',
-									role: 'value',
-									unit: unit,
-									read: true,
-									write: false
-								},
-								native: {}
-							});
-							self.setState(channel + '.value', {val: content[key].lastData.value, ack: true});
-
-							self.setObjectNotExists(channel + '.dateTime', {
-								type: 'state',
-								common: {
-									name: group+':'+content[key].name+':dateTime',
-									type: 'string',
-									role: 'date',
-									read: true,
-									write: false
-								},
-								native: {}
-							});
-							self.setState(channel + '.dateTime', {val: Date.parse(content[key].lastData.dateTime), ack: true});
-						}
+					if(response.statusCode==401)
+					{
+						self.log.error("Invalid Sensor API Key and/or ListKey");
+						return;
 					}
+					else if(response.statusCode==200)
+					{
+						for (var key in content) {
+							if (content.hasOwnProperty(key)) {
 
-					self.setObjectNotExists('responseTime', {
-						type: 'state',
-						common: {
-							name: 'responseTime',
-							type: 'number',
-							role: 'value',
-							unit: 'ms',
-							read: true,
-							write: false
-						},
-						native: {}
-					});
-					self.setState('responseTime', {val: parseInt(response.timingPhases.total), ack: true});
+								var group = "Unknown";
+								if(content[key].category!=null)
+									group = content[key].category;
+
+								self.setObjectNotExists(group, {
+									type: 'device',
+									common: {
+										name: group
+									},
+									native: {}
+								});
+
+								const channel = group+"."+key;
+
+								self.setObjectNotExists(channel, {
+									type: 'channel',
+									common: {
+										name: group+':'+content[key].name
+									},
+									native: {}
+								});
+
+								self.setObjectNotExists(channel + '.id', {
+									type: 'state',
+									common: {
+										name: group+':'+content[key].name+':id',
+										type: 'string',
+										role: 'text'
+									},
+									native: {}
+								});
+								this.setState(channel + '.id', {val: key, ack: true});
+
+								self.setObjectNotExists(channel + '.shortName', {
+									type: 'state',
+									common: {
+										name: group+':'+content[key].name+':shortName',
+										type: 'string',
+										role: 'text'
+									},
+									native: {}
+								});
+								this.setState(channel + '.shortName', {val: content[key].shortName, ack: true});
+
+								self.setObjectNotExists(channel + '.name', {
+									type: 'state',
+									common: {
+										name: group+':'+content[key].name+':name',
+										type: 'string',
+										role: 'text'
+									},
+									native: {}
+								});
+								this.setState(channel + '.name', {val: content[key].name, ack: true});
+
+								var unit = '?';
+								switch(content[key].dataUnit)
+								{
+									case 'AMPERE':
+										unit = "A";
+										break;
+									case 'AMPEREHOURS':
+										unit = "Ah";
+										break;
+									case 'BAR':
+										unit = "bar";
+										break;
+									case 'CELSIUS':
+										unit = "°C";
+										break;
+									case 'FAHRENHEIT':
+										unit = "°F";
+										break;
+									case 'HEKTOPASCAL':
+										unit = "hPa";
+										break;
+									case 'KELVIN':
+										unit = "K";
+										break;
+									case 'KOHM':
+										unit = "kΩ";
+										break;
+									case 'LUMEN':
+										unit = "lum";
+										break;
+									case 'LUX':
+										unit = "lux";
+										break;
+									case 'METER':
+										unit = "m";
+										break;
+									case 'MILLIAMPERE':
+										unit = "mA";
+										break;
+									case 'MILLIAMPEREHOURS':
+										unit = "mAh";
+										break;
+									case 'MILLIVOLT':
+										unit = "mV";
+										break;
+									case 'NONE':
+										unit = "";
+										break;
+									case 'OHM':
+										unit = "Ω";
+										break;
+									case 'PASCAL':
+										unit = "Pa";
+										break;
+									case 'PERCENT':
+										unit = "%";
+										break;
+									case 'PPM':
+										unit = "ppm";
+										break;
+									case 'UNKNOWN':
+										unit = "?";
+										break;
+									case 'VOLT':
+										unit = "V";
+										break;
+									case 'WATT':
+										unit = "W";
+										break;
+									case 'WATTHOURS':
+										unit = "Wh";
+										break;
+									default:
+										unit = "?";
+										break;
+								}
+
+								self.setObjectNotExists(channel + '.value', {
+									type: 'state',
+									common: {
+										name: group+':'+content[key].name+':value',
+										type: 'number',
+										role: 'value',
+										unit: unit,
+										read: true,
+										write: false
+									},
+									native: {}
+								});
+								self.setState(channel + '.value', {val: content[key].lastData.value, ack: true});
+
+								self.setObjectNotExists(channel + '.upToDate', {
+									type: 'state',
+									common: {
+										name: group+':'+content[key].name+':upToDate',
+										type: 'boolean',
+										role: 'value',
+										read: true,
+										write: false
+									},
+									native: {}
+								});
+								self.setState(channel + '.upToDate', {val: content[key].upToDate, ack: true});
+
+								self.setObjectNotExists(channel + '.dateTime', {
+									type: 'state',
+									common: {
+										name: group+':'+content[key].name+':dateTime',
+										type: 'string',
+										role: 'date',
+										read: true,
+										write: false
+									},
+									native: {}
+								});
+								self.setState(channel + '.dateTime', {val: Date.parse(content[key].lastData.dateTime), ack: true});
+							}
+						}
+						self.setObjectNotExists('responseTime', {
+							type: 'state',
+							common: {
+								name: 'Service response time',
+								type: 'number',
+								role: 'value',
+								unit: 'ms',
+								read: true,
+								write: false
+							},
+							native: {}
+						});
+						self.setState('responseTime', {val: parseInt(response.timingPhases.total), ack: true});
+					}
+					else if(response.statusCode==304) {
+						self.log.info("No Sensor Update required");
+					}
+					else
+					{
+						self.log.warn("Unexpected Return Status: "+response.statusCode);
+						return;
+					}
 
 				} else if (error) {
 					self.log.info(error);

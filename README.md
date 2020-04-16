@@ -10,7 +10,7 @@
 
 [![NPM](https://nodei.co/npm/iobroker.sensate.png?downloads=true)](https://nodei.co/npm/iobroker.sensate/)
 
-## sensate adapter for ioBroker
+## Sensate platform adapter for ioBroker
 
 This adapter is used to interface the [Sensate Platform](https://www.sensate.io). The purpose of the Sensate Platform is
 to enable people to build their own custom DiY sensor hardware solutions, and easily access their data from anywhere. The
@@ -18,17 +18,25 @@ Sensate Platform does allow for fully customized projects, and also offers strai
 Start building your DiY solution today, using either the widely available ESP8266 or ESP32 Hardware plus one (or more) of the
 supported sensors for all kind of sensor data.
 
-
-
 ## Changelog
 
+### 0.1.0
+* First working pre-release with polling and regular sensor updates.
 ### 0.0.1
-* (Manuel) initial release
+* Initial release
 
+## Known Issues
+
+### Temperature Unit Change after Initial Run
+If the temperature unit is changed, the values will show the new values but with the wrong (the old) unit.
+### Polling Interval
+The service will poll strictly every 30 seconds from the time of starting it, not reacting to the current state and expected sensor interval update.
+### Up to Date Status
+The up to date status of a sensor is only updated after a successful server fetch, i.e. if there is no server connection the up to date flag will not change to false.
 ## License
 MIT License
 
-Copyright (c) 2020 Manuel <support@sensate.io>
+Copyright (c) 2020 Sensate Digital Solutions GmbH -> [hello@sensate.io](mailto:hello@sensate.io)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
