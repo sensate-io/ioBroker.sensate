@@ -1,6 +1,6 @@
 {
   "name": "iobroker.sensate",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Connector to the Sensate Platform",
   "author": {
     "name": "Sensate Digital Technologies GmbH",

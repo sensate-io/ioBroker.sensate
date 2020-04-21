@@ -1,8 +1,13 @@
 {
 	"common": {
 		"name": "sensate",
-		"version": "0.1.1",
+		"version": "0.1.2",
 		"news": {
+			"0.1.2": {
+				"en": "Fixed a bug if temperature unit was changed after initial config",
+				"de": "Ein Fehler wurde behoben, wenn die Temperatureinheit nach der anfänglichen Konfiguration geändert wurde",
+				"ru": "Исправлена ошибка, если после первоначальной конфигурации изменялась единица температуры"
+			},
 			"0.1.1": {
 				"en": "minor improvements",
 				"de": "Kleine Verbesserungen",

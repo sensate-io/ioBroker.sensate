@@ -20,6 +20,8 @@ supported sensors for all kind of sensor data.
 
 ## Changelog
 
+### 0.1.2
+* Fixed wrong Temperature-Unit if changed after Init
 ### 0.1.1
 * Minor improvements
 ### 0.1.0
@@ -28,9 +30,6 @@ supported sensors for all kind of sensor data.
 * Initial release
 
 ## Known Issues
-
-### Temperature Unit Change after Initial Run
-If the temperature unit is changed, the values will show the new values but with the wrong (the old) unit.
 ### Polling Interval
 The service will poll strictly every 30 seconds from the time of starting it, not reacting to the current state and expected sensor interval update.
 ### Up to Date Status

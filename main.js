@@ -337,7 +337,7 @@ class Sensate extends utils.Adapter {
 										break;
 								}
 
-								self.setObjectNotExists(channel + '.value', {
+								self.setObject(channel + '.value', {
 									type: 'state',
 									common: {
 										name: group+':'+content[key].name+':value',
